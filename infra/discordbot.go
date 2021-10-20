@@ -7,6 +7,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+//TOKEN
 func init() {
 	Token := os.Getenv("DGU_TOKEN")
 	if Token == "" {
