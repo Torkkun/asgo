@@ -1,7 +1,5 @@
 package main
 
-import "asgo/infra"
-
 var (
 	Token string
 )
@@ -56,6 +54,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 }*/
 
 func main() {
-	infra.Letstartsele()
+	//infra.Letstartsele()
 
 }
