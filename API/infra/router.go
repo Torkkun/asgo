@@ -1,6 +1,8 @@
 package infra
 
 import (
+	"asgo/infra/action"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -27,56 +29,47 @@ func init() {
 			"*",
 		},
 	}))
-	//そのうち抽象化する
+	//そのうち抽象化したい
 	gatyaRoute := router.Group("/gatya")
 	{
 		gatyaRoute.GET("/point", func(c *gin.Context) {
-			getpoint(c)
+			action.GetPoint(c)
 		})
 		gatyaRoute.GET("/roll", func(c *gin.Context) {
-			getroll(c)
-		})
-		gatyaRoute.GET("rolls", func(c *gin.Context) {
-			getrolls(c)
+			action.GetRoll(c)
 		})
 	}
 
 	bonusRoute := router.Group("/bonus")
 	{
 		bonusRoute.GET("/number", func(c *gin.Context) {
-			getbonusnumber(c)
+			action.GetBonusNumber(c)
 		})
 		bonusRoute.GET("/week", func(c *gin.Context) {
-			getbonusweek(c)
+			action.GetBonusWeek(c)
 		})
 		bonusRoute.GET("/roll", func(c *gin.Context) {
-			getbonusroll(c)
-		})
-		bonusRoute.GET("rolls", func(c *gin.Context) {
-			getbonusrolls(c)
+			action.GetBonusRoll(c)
 		})
 	}
 
 	ticketRoute := router.Group("/ticket")
 	{
 		ticketRoute.GET("/number", func(c *gin.Context) {
-			getticketnumber(c)
+			action.GetTicketNumber(c)
 		})
 		ticketRoute.GET("/roll", func(c *gin.Context) {
-			getticketroll(c)
-		})
-		ticketRoute.GET("/rolls", func(c *gin.Context) {
-			getticketrolls(c)
+			action.GetTicketRoll(c)
 		})
 	}
 
 	questionnaireRoute := router.Group("/questionnaire")
 	{
 		questionnaireRoute.GET("/content", func(c *gin.Context) {
-			getcontent(c)
+			action.GetContent(c)
 		})
 		questionnaireRoute.POST("/autowrite", func(c *gin.Context) {
-			postwrite(c)
+			action.PostWrite(c)
 		})
 	}
 }
