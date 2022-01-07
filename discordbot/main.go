@@ -25,7 +25,8 @@ func main() {
 	}
 
 	//定期実行
-	go discord.TestTicker(dg)
+	//go discord.TestTicker(dg)
+	go discord.DailyGatya(dg)
 
 	// Wait here until CTRL-C or other term signal is received.
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
