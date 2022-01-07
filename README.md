@@ -1,12 +1,16 @@
 #asgo re:
 時間あるとき進める
 
-##めも
+##後で状況を思い出す用のめも
 * docker container
     * discordbot
     * apiserver
         * firebase authentication(user management)
     * selenium
+        * `sudo docker pull selenium/standalone-firefox` にてseleniumのdockerimageを拾ってくる
+        * コード内でremoteアクセスすれば良い神 実行状況を見る場合は、http://localhost:4444 にアクセスする
+        詳しくはhttps://github.com/SeleniumHQ/docker-selenium
+
     * (DB postgreSQL)
 
 後にユーザー毎にコンフィグを設定できるようにしたい現状はログインページのみとする
