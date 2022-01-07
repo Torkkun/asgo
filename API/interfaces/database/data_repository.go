@@ -1,4 +1,4 @@
-package interfaces
+package database
 
 type DataRepository struct {
 	SqlHandler
