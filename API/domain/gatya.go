@@ -1,5 +1,7 @@
 package domain
 
+import "time"
+
 type Ticket struct {
 	Name    string
 	HoldNum int
@@ -13,11 +15,11 @@ type Gatya struct {
 	BonusCountTime string
 }
 
-type User struct {
-	Email    string
-	Password string
+type DailyGatya struct {
+	Point          int
+	Point_Sum      int
+	Roll_num       int
+	Execution_Date time.Time
 }
 
 type Gatyas []Gatya
-
-type Users []User

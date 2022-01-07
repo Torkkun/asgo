@@ -29,14 +29,15 @@ func init() {
 			"*",
 		},
 	}))
-	//そのうち抽象化したい
-	gatyaRoute := router.Group("/gatya")
+
+	asgoreRoute := router.Group("/asgore")
 	{
-		gatyaRoute.GET("/point", func(c *gin.Context) {
-			action.GetPoint(c)
+		asgoreRoute.GET("/data", func(c *gin.Context) {
+
 		})
-		gatyaRoute.GET("/roll", func(c *gin.Context) {
-			action.GetRoll(c)
+
+		asgoreRoute.POST("/signup", func(c *gin.Context) {
+
 		})
 	}
 
