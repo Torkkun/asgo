@@ -2,6 +2,7 @@ package selenium
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
@@ -15,9 +16,10 @@ func Example() {
 	caps := selenium.Capabilities{"browserName": "firefox"}
 	wd, err := selenium.NewRemote(caps, URL)
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 	defer wd.Quit()
+
 	// Navigate to the simple playground interface.
 	if err := wd.Get("http://play.golang.org/?simple=1"); err != nil {
 		panic(err)
@@ -55,7 +57,7 @@ func Example() {
 	}
 
 	// Wait for the program to finish running and get the output.
-	outputDiv, err := wd.FindElement(selenium.ByCSSSelector, "#output")
+	outputDiv, err := wd.FindElement(selenium.ByCSSSelector, "body > main > div > div.Playground-outputContainer.js-playgroundOutputEl > pre")
 	if err != nil {
 		panic(err)
 	}
