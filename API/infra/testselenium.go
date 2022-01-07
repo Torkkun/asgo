@@ -1,4 +1,4 @@
-package selenium
+package infra
 
 import (
 	"fmt"
@@ -22,17 +22,17 @@ func Example() {
 
 	// Navigate to the simple playground interface.
 	if err := wd.Get("http://play.golang.org/?simple=1"); err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	// Get a reference to the text box containing code.
 	elem, err := wd.FindElement(selenium.ByCSSSelector, "#code")
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 	// Remove the boilerplate code already in the text box.
 	if err := elem.Clear(); err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	// Enter some new code in text box.
@@ -44,29 +44,29 @@ func Example() {
 		}
 	`)
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	// Click the run button.
 	btn, err := wd.FindElement(selenium.ByCSSSelector, "#run")
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 	if err := btn.Click(); err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	// Wait for the program to finish running and get the output.
 	outputDiv, err := wd.FindElement(selenium.ByCSSSelector, "body > main > div > div.Playground-outputContainer.js-playgroundOutputEl > pre")
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	var output string
 	for {
 		output, err = outputDiv.Text()
 		if err != nil {
-			panic(err)
+			log.Fatalln(err)
 		}
 		if output != "Waiting for remote server..." {
 			break

@@ -1,6 +1,8 @@
 package infra
 
 import (
+	"asgo/interfaces/controllers"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -28,18 +30,22 @@ func init() {
 		},
 	}))
 
+	selehandler := NewSeleHandler()
+	seleController := controllers.NewSeleController(selehandler)
+
 	asgoreRoute := router.Group("/asgore")
 	{
 		asgoreRoute.GET("/data", func(c *gin.Context) {
-
+			//スクレイピング
+			//DBから読み出し
 		})
 
 		asgoreRoute.POST("/signup", func(c *gin.Context) {
 
 		})
 
-		asgoreRoute.GET("/daily", func(c *gin.Context) {
-
+		asgoreRoute.POST("/daily", func(c *gin.Context) {
+			seleController.Roll(c)
 		})
 
 		asgoreRoute.GET("/ticket", func(c *gin.Context) {

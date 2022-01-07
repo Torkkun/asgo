@@ -8,6 +8,7 @@
         * firebase authentication(user management)
     * selenium
         * `sudo docker pull selenium/standalone-firefox` にてseleniumのdockerimageを拾ってくる
+        * `docker run -d -p 4444:4444 -p 7900:7900 --shm-size="2g" selenium/standalone-firefox` でrunする
         * コード内でremoteアクセスすれば良い神 実行状況を見る場合は、http://localhost:4444 にアクセスする
         詳しくはhttps://github.com/SeleniumHQ/docker-selenium
 
@@ -25,6 +26,11 @@ discordで自分のデータを取得するコマンドを入力するとデー�
 実行可能だった場合は現状任意でユーザーに実行させる
 
 毎日決まった時間にデイリーが実行され結果がdiscordに帰ってくる
+DB内のユーザーを全員一度に実行させる
+ユーザーテーブルには
+sakitoログイン用 password email
+discord_id? ←要検討
+created_at
 
 clean architecture によりDBとseleniumライブラリを独立させたい！
 

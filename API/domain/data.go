@@ -29,8 +29,10 @@ type Gatya struct {
 type DailyGatya struct {
 	Day_Point      int
 	Point_Sum      int
-	Execution_Date time.Time
+	Execution_Date string
 }
+
+type DailyDatas []DailyGatya
 
 //引換券ガチャ用のデータ
 type ExchangeGatya struct {

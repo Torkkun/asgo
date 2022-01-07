@@ -1,8 +1,8 @@
 package main
 
-import "asgo/infra/selenium"
+import "asgo/infra"
 
 func main() {
 	//seleniumTestCode
-	selenium.Example()
+	infra.Example()
 }
