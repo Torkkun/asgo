@@ -4,7 +4,7 @@ import (
 	"github.com/tebeka/selenium"
 )
 
-func Settingsele() {
+func SettingSelenium() {
 	const (
 		URL = "http://localhost:4444/wd/hub"
 	)

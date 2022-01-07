@@ -1,8 +1,6 @@
 package infra
 
 import (
-	"asgo/infra/action"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -39,38 +37,25 @@ func init() {
 		asgoreRoute.POST("/signup", func(c *gin.Context) {
 
 		})
-	}
 
-	bonusRoute := router.Group("/bonus")
-	{
-		bonusRoute.GET("/number", func(c *gin.Context) {
-			action.GetBonusNumber(c)
-		})
-		bonusRoute.GET("/week", func(c *gin.Context) {
-			action.GetBonusWeek(c)
-		})
-		bonusRoute.GET("/roll", func(c *gin.Context) {
-			action.GetBonusRoll(c)
-		})
-	}
+		asgoreRoute.GET("/daily", func(c *gin.Context) {
 
-	ticketRoute := router.Group("/ticket")
-	{
-		ticketRoute.GET("/number", func(c *gin.Context) {
-			action.GetTicketNumber(c)
 		})
-		ticketRoute.GET("/roll", func(c *gin.Context) {
-			action.GetTicketRoll(c)
+
+		asgoreRoute.GET("/ticket", func(c *gin.Context) {
+
+		})
+
+		asgoreRoute.GET("/bonus", func(c *gin.Context) {
+
 		})
 	}
 
 	questionnaireRoute := router.Group("/questionnaire")
 	{
 		questionnaireRoute.GET("/content", func(c *gin.Context) {
-			action.GetContent(c)
 		})
 		questionnaireRoute.POST("/autowrite", func(c *gin.Context) {
-			action.PostWrite(c)
 		})
 	}
 }

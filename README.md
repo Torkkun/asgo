@@ -22,19 +22,27 @@ discordで自分のデータを取得するコマンドを入力するとデー�
 
 毎日決まった時間にデイリーが実行され結果がdiscordに帰ってくる
 
+clean architecture によりDBとseleniumライブラリを独立させたい！
+
 tables
 
 gatyadata
 {
-    daily_point
-    sum_point
-    bonus_ticket
-    bonus_weekDue
-    user_id
-    updated_at
+    daily_point int
+    sum_point int
+    bonus_ticket int
+    until_bonus int
+    exchange_ticket int
+    enquete bool
+    user_id string
+    updated_at time.Time
 }
 
 user
 {
-
+    user_id string
+    username string
+    password string
+    firebase_uuid string
+    client string
 }
