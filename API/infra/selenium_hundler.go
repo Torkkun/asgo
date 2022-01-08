@@ -28,9 +28,9 @@ func NewSeleHandler() *SeleHandler {
 	return sele
 }
 
-func (driver *SeleHandler) Get(url string) (err error) {
-	err = driver.WebDriver.Get(url)
-	return
+func (driver *SeleHandler) Get(url string) error {
+	err := driver.WebDriver.Get(url)
+	return err
 }
 
 func (driver *SeleHandler) FindElement(by, value string) (asgo.Element, error) {
@@ -43,18 +43,18 @@ func (driver *SeleHandler) FindElement(by, value string) (asgo.Element, error) {
 	return e, nil
 }
 
-func (elem WebElement) Clear() (err error) {
+func (elem WebElement) Clear() error {
 	return elem.Element.Clear()
 }
 
-func (elem WebElement) Click() (err error) {
+func (elem WebElement) Click() error {
 	return elem.Element.Click()
 }
 
-func (elem WebElement) SendKeys(keys string) (err error) {
+func (elem WebElement) SendKeys(keys string) error {
 	return elem.Element.SendKeys(keys)
 }
 
-func (elem WebElement) Text() (text string, err error) {
+func (elem WebElement) Text() (string, error) {
 	return elem.Element.Text()
 }

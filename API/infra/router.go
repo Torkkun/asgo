@@ -35,26 +35,45 @@ func init() {
 
 	asgoreRoute := router.Group("/asgore")
 	{
-		asgoreRoute.GET("/data", func(c *gin.Context) {
-			//スクレイピング
-			//DBから読み出し
-		})
 
 		asgoreRoute.POST("/signup", func(c *gin.Context) {
 
 		})
 
-		asgoreRoute.POST("/daily", func(c *gin.Context) {
-			seleController.Roll(c)
-		})
+		scrapingRoute := asgoreRoute.Group("/scrap")
+		{
+			scrapingRoute.GET("/scrap", func(c *gin.Context) {
+				seleController.Scraping(c)
+			})
+			scrapingRoute.GET("/daily", func(c *gin.Context) {
+				seleController.Roll(c)
+			})
+			scrapingRoute.GET("/ticket", func(c *gin.Context) {
 
-		asgoreRoute.GET("/ticket", func(c *gin.Context) {
+			})
+			scrapingRoute.GET("/bonus", func(c *gin.Context) {
 
-		})
+			})
 
-		asgoreRoute.GET("/bonus", func(c *gin.Context) {
+		}
 
-		})
+		dataRoute := asgoreRoute.Group("/data")
+		{
+			dataRoute.POST("/create", func(c *gin.Context) {
+
+			})
+			dataRoute.GET("/read", func(c *gin.Context) {
+
+			})
+
+			dataRoute.PUT("/update", func(c *gin.Context) {
+
+			})
+
+			dataRoute.DELETE("/delete", func(c *gin.Context) {
+
+			})
+		}
 	}
 
 	questionnaireRoute := router.Group("/questionnaire")

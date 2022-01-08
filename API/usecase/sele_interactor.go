@@ -26,3 +26,7 @@ func (interactor *SeleInteractor) DailyGatya(users []domain.User) (datas domain.
 	}
 	return
 }
+
+func (interactor *SeleInteractor) MyData(userid string) (err error) {
+	return
+}
