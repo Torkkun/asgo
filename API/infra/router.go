@@ -40,9 +40,19 @@ func init() {
 
 		})
 
+		userRoute := asgoreRoute.Group("/user")
+		{
+			userRoute.GET("/new", func(c *gin.Context) {
+
+			})
+			userRoute.POST("/create", func(c *gin.Context) {
+
+			})
+		}
+
 		scrapingRoute := asgoreRoute.Group("/scrap")
 		{
-			scrapingRoute.GET("/scrap", func(c *gin.Context) {
+			scrapingRoute.GET("/data", func(c *gin.Context) {
 				seleController.Scraping(c)
 			})
 			scrapingRoute.GET("/daily", func(c *gin.Context) {
