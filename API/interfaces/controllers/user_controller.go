@@ -1,8 +1,10 @@
 package controllers
 
 import (
+	"asgo/domain"
 	"asgo/interfaces/database"
 	"asgo/usecase"
+	"log"
 )
 
 type UserController struct {
@@ -17,6 +19,28 @@ func NewUserController(sqlHandler database.SqlHandler) *UserController {
 			},
 		},
 	}
+}
+
+func (controller *UserController) NewCreate(c Context) {
+	identifier := c.Query("client_uid")
+	onetimepass, err := createpasscode()
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, err.Error())
+	}
+	userdata := domain.SecretCode{
+		ClientUserID:    identifier,
+		OneTimePassWord: onetimepass,
+	}
+	err = controller.Interactor.NewCreate(userdata)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, err.Error())
+	}
+	code := domain.Code{
+		Code: onetimepass,
+	}
+	c.JSON(201, code)
 }
 
 func (controller *UserController) Create(c Context) {
