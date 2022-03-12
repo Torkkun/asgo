@@ -8,39 +8,39 @@ import (
 )
 
 type UserController struct {
-	Interactor usecase.UserInteractor
+	SInteracter usecase.SecretInteractor
+	UInteractor usecase.UserInteractor
 }
 
 func NewUserController(sqlHandler database.SqlHandler) *UserController {
 	return &UserController{
-		Interactor: usecase.UserInteractor{
-			UserRepository: &database.UserRepository{
+		SInteracter: usecase.SecretInteractor{
+			SecretRepo: &database.SecretRepository{
+				SqlHandler: sqlHandler,
+			},
+		},
+		UInteractor: usecase.UserInteractor{
+			UserRepo: &database.UserRepository{
 				SqlHandler: sqlHandler,
 			},
 		},
 	}
 }
 
-func (controller *UserController) NewCreate(c Context) {
+// discordのuidを取得しワンタイムパスワードを作成　// 時間制限をどうするか
+func (con *UserController) NewCreate(c Context) {
 	identifier := c.Query("client_uid")
-	onetimepass, err := createpasscode()
+	oneTimePass, err := createpasscode()
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, err.Error())
 	}
-	userdata := domain.SecretCode{
-		ClientUserID:    identifier,
-		OneTimePassWord: onetimepass,
-	}
-	err = controller.Interactor.NewCreate(userdata)
-	if err != nil {
+
+	if err = con.SInteracter.Create(&database.Secret{ClientUserID: identifier, OneTimePassWord: oneTimePass}); err != nil {
 		log.Println(err)
 		c.JSON(500, err.Error())
 	}
-	code := domain.Code{
-		Code: onetimepass,
-	}
-	c.JSON(201, code)
+	c.JSON(201, domain.SecretResponse{Code: oneTimePass})
 }
 
 func (controller *UserController) Create(c Context) {

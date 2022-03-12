@@ -8,6 +8,11 @@ import (
 	_ "github.com/lib/pq"
 )
 
+const (
+	mysql    string = "mysql"
+	postgres string = "postgres"
+)
+
 type SqlHandler struct {
 	Conn *sql.DB
 }
@@ -21,7 +26,7 @@ type SqlRow struct {
 }
 
 func NewSqlHandler() *SqlHandler {
-	conn, err := sql.Open("mysql", "root:@tcp(db:3306)")
+	conn, err := sql.Open(postgres, "root:@tcp(db:3306)")
 	if err != nil {
 		log.Fatalln(err)
 	}

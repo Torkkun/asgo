@@ -29,13 +29,15 @@ func init() {
 			"*",
 		},
 	}))
+	router.Use(authenticate())
 
 	selehandler := NewSeleHandler()
 	seleController := controllers.NewSeleController(selehandler)
+	sqlhandler := NewSqlHandler()
+	userController := controllers.NewUserController(sqlhandler)
 
 	asgoreRoute := router.Group("/asgore")
 	{
-
 		asgoreRoute.POST("/signup", func(c *gin.Context) {
 
 		})
@@ -43,10 +45,11 @@ func init() {
 		userRoute := asgoreRoute.Group("/user")
 		{
 			userRoute.GET("/new", func(c *gin.Context) {
-
+				// secret
+				userController.NewCreate(c)
 			})
 			userRoute.POST("/create", func(c *gin.Context) {
-
+				// サイトのユーザー処理
 			})
 		}
 
