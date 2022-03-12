@@ -25,15 +25,15 @@ func NewSeleController(selehandler selenium.SeleHandler) *SeleController {
 func (controller *SeleController) Roll(c Context) {
 	//userid := c.Query("userid")
 	//useridを使用してdatabaseからデータを取得して
-	ur := domain.UsersRequest{}
-	err := c.Bind(&ur)
+	user := domain.UsersRequest{}
+	err := c.Bind(&user)
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, err.Error())
 		return
 	}
-	users := ur.Users
-	datas, err := controller.Interactor.DailyGatya(users)
+	// DBからデータを取得し整形
+	datas, err := controller.Interactor.DailyGatya(&usecase.SakitoLogin{})
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, err.Error())

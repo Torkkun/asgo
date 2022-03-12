@@ -58,3 +58,5 @@ user
     firebase_uuid string
     client string
 }
+
+一日またはすべてのガチャが轢き終わったらその結果をまたはキャッシュして残すreddis

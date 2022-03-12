@@ -1,11 +1,13 @@
 package usecase
 
-import "asgo/domain"
+import (
+	"asgo/interfaces/selenium"
+)
 
 //seleniumでスクレイピングしてくる
 type SeleRepository interface {
-	Login(domain.User) error
-	DailyRoll() (domain.DailyGatya, error)
+	Login(*selenium.Login) error
+	DailyRoll() (*selenium.DailyGatya, error)
 	BonusRoll(int) error
 	ExchangeRoll(int) error
 	CheckTicket() error

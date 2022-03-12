@@ -1,12 +1,14 @@
 package usecase
 
-import "asgo/domain"
+import "asgo/interfaces/database"
 
 type SecretInteractor struct {
 	SecretRepo SecretRepository
 }
 
-func (interactor *SecretInteractor) Create(u domain.SecretCode) (err error) {
-	_, err = interactor.SecretRepo.InsertSecret(u)
-	return
+func (interactor *SecretInteractor) Create(user *database.Secret) error {
+	if err := interactor.SecretRepo.InsertSecret(user); err != nil {
+		return err
+	}
+	return nil
 }

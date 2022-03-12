@@ -1,9 +1,10 @@
 package usecase
 
-import "asgo/domain"
+import (
+	"asgo/interfaces/database"
+)
 
 type UserRepository interface {
-	InsertUser(domain.UserDB) (int, error)
-	SelectUserFindById(string) (domain.UserDB, error)
-	SelectUserFindByCode(string) (domain.SecretCode, error)
+	InsertUser(*database.User) error
+	SelectUserFindById(string) (*database.User, error)
 }

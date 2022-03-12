@@ -1,17 +1,26 @@
 package usecase
 
-import "asgo/domain"
+import (
+	"asgo/interfaces/database"
+	"log"
+)
 
 type UserInteractor struct {
 	UserRepo UserRepository
 }
 
-func (interactor *UserInteractor) Create(u domain.UserDB) (err error) {
-	_, err = interactor.UserRepo.InsertUser(u)
-	return
+func (interactor *UserInteractor) Create(user *database.User) error {
+	if err := interactor.UserRepo.InsertUser(user); err != nil {
+		return err
+	}
+	return nil
 }
 
-func (interactor *UserInteractor) UserById(identifier string) (user domain.UserDB, err error) {
-	user, err = interactor.UserRepo.SelectUserFindById(identifier)
-	return
+func (interactor *UserInteractor) UserById(identifier string) (*database.User, error) {
+	user, err := interactor.UserRepo.SelectUserFindById(identifier)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return user, nil
 }

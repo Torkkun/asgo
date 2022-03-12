@@ -1,7 +1,7 @@
 package usecase
 
-import "asgo/domain"
+import "asgo/interfaces/database"
 
 type SecretRepository interface {
-	InsertSecret(domain.SecretCode) (int, error)
+	InsertSecret(*database.Secret) error
 }

@@ -27,26 +27,20 @@ func NewUserController(sqlHandler database.SqlHandler) *UserController {
 	}
 }
 
+// discordのuidを取得しワンタイムパスワードを作成　// 時間制限をどうするか
 func (con *UserController) NewCreate(c Context) {
 	identifier := c.Query("client_uid")
-	onetimepass, err := createpasscode()
+	oneTimePass, err := createpasscode()
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, err.Error())
 	}
-	userdata := domain.SecretCode{
-		ClientUserID:    identifier,
-		OneTimePassWord: onetimepass,
-	}
 
-	if err = con.SInteracter.Create(userdata); err != nil {
+	if err = con.SInteracter.Create(&database.Secret{ClientUserID: identifier, OneTimePassWord: oneTimePass}); err != nil {
 		log.Println(err)
 		c.JSON(500, err.Error())
 	}
-	code := domain.Code{
-		Code: onetimepass,
-	}
-	c.JSON(201, code)
+	c.JSON(201, domain.SecretResponse{Code: oneTimePass})
 }
 
 func (controller *UserController) Create(c Context) {
