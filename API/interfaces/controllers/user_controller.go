@@ -8,20 +8,26 @@ import (
 )
 
 type UserController struct {
-	Interactor usecase.UserInteractor
+	SInteracter usecase.SecretInteractor
+	UInteractor usecase.UserInteractor
 }
 
 func NewUserController(sqlHandler database.SqlHandler) *UserController {
 	return &UserController{
-		Interactor: usecase.UserInteractor{
-			UserRepository: &database.UserRepository{
+		SInteracter: usecase.SecretInteractor{
+			SecretRepo: &database.SecretRepository{
+				SqlHandler: sqlHandler,
+			},
+		},
+		UInteractor: usecase.UserInteractor{
+			UserRepo: &database.UserRepository{
 				SqlHandler: sqlHandler,
 			},
 		},
 	}
 }
 
-func (controller *UserController) NewCreate(c Context) {
+func (con *UserController) NewCreate(c Context) {
 	identifier := c.Query("client_uid")
 	onetimepass, err := createpasscode()
 	if err != nil {
@@ -32,8 +38,8 @@ func (controller *UserController) NewCreate(c Context) {
 		ClientUserID:    identifier,
 		OneTimePassWord: onetimepass,
 	}
-	err = controller.Interactor.NewCreate(userdata)
-	if err != nil {
+
+	if err = con.SInteracter.Create(userdata); err != nil {
 		log.Println(err)
 		c.JSON(500, err.Error())
 	}

@@ -2,7 +2,6 @@ package database
 
 import (
 	"asgo/domain"
-	"crypto/sha256"
 	"time"
 )
 
@@ -10,7 +9,7 @@ type UserRepository struct {
 	SqlHandler
 }
 
-func (repo *UserRepository) Store(u domain.UserDB) (id int, err error) {
+func (repo *UserRepository) InsertUser(u domain.UserDB) (id int, err error) {
 	result, err := repo.Execute(
 		"INSERT INTO user(client_uid, firebase_uid, email, password, created_at, updated_at) values($1,$2,$3,$4) ON CONFLICT ON CONSTRAINT user_pkey UPDATE SET email = $3 & password = $4 & updated_at = current_timestamp",
 		u.ClientUserID, u.FireBaseUserID, u.Email, u.Password,
@@ -26,23 +25,7 @@ func (repo *UserRepository) Store(u domain.UserDB) (id int, err error) {
 	return
 }
 
-func (repo *UserRepository) StoreCode(u domain.SecretCode) (id int, err error) {
-	result, err := repo.Execute(
-		"INSERT INTO secret(client_uid, onetimepass) values($1,$2) ON CONFLICT ON CONSTRAINT user_pkey DO UPDATE SET onetimepass = $2 & updated_at = current_timestamp",
-		u.ClientUserID, sha256.Sum256([]byte(u.OneTimePassWord)),
-	)
-	if err != nil {
-		return
-	}
-	id64, err := result.LastInsertId()
-	if err != nil {
-		return
-	}
-	id = int(id64)
-	return
-}
-
-func (repo *UserRepository) FindById(identifier string) (user domain.UserDB, err error) {
+func (repo *UserRepository) SelectUserFindById(identifier string) (user domain.UserDB, err error) {
 	row, err := repo.Query(
 		"SELECT client_uid, firebase_uid, email, password, created_at, updated_at FROM user WHERE client_uid = ?", identifier)
 	if err != nil {
@@ -68,7 +51,7 @@ func (repo *UserRepository) FindById(identifier string) (user domain.UserDB, err
 	return
 }
 
-func (repo *UserRepository) FindCode(identifier string) (secret domain.SecretCode, err error) {
+func (repo *UserRepository) SelectUserFindByCode(identifier string) (secret domain.SecretCode, err error) {
 	row, err := repo.Query("SELECT client_uid, onetimepass, created_at, updated_at FROM secret WHERE client_uid = ?", identifier)
 	if err != nil {
 		return

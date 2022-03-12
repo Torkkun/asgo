@@ -29,13 +29,13 @@ func init() {
 			"*",
 		},
 	}))
+	router.Use(authenticate())
 
 	selehandler := NewSeleHandler()
 	seleController := controllers.NewSeleController(selehandler)
 
 	asgoreRoute := router.Group("/asgore")
 	{
-
 		asgoreRoute.POST("/signup", func(c *gin.Context) {
 
 		})

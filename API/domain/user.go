@@ -28,13 +28,6 @@ type UserDB struct {
 	UpdatedAt      time.Time
 }
 
-type SecretCode struct {
-	ClientUserID    string
-	OneTimePassWord string
-	CreatedAt       time.Time
-	UpdatedAt       time.Time
-}
-
 type Code struct {
 	Code string `json:"code"`
 }

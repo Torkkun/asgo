@@ -3,20 +3,15 @@ package usecase
 import "asgo/domain"
 
 type UserInteractor struct {
-	UserRepository UserRepository
-}
-
-func (interactor *UserInteractor) NewCreate(u domain.SecretCode) (err error) {
-	_, err = interactor.UserRepository.StoreCode(u)
-	return
+	UserRepo UserRepository
 }
 
 func (interactor *UserInteractor) Create(u domain.UserDB) (err error) {
-	_, err = interactor.UserRepository.Store(u)
+	_, err = interactor.UserRepo.InsertUser(u)
 	return
 }
 
 func (interactor *UserInteractor) UserById(identifier string) (user domain.UserDB, err error) {
-	user, err = interactor.UserRepository.FindById(identifier)
+	user, err = interactor.UserRepo.SelectUserFindById(identifier)
 	return
 }
