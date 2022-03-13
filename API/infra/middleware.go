@@ -29,12 +29,3 @@ func authenticate() gin.HandlerFunc {
 func SetUserID(ctx *gin.Context, userID string) {
 	ctx.Set(userIDKey, userID)
 }
-
-// コンテキストからuseridを取得
-func GetUserIDFromContext(ctx *gin.Context) string {
-	var userID string
-	if ctx.Value(userIDKey) != nil {
-		userID = ctx.Value(userIDKey).(string)
-	}
-	return userID
-}

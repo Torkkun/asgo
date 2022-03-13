@@ -23,7 +23,7 @@ func NewSeleController(selehandler selenium.SeleHandler) *SeleController {
 }
 
 func (controller *SeleController) Roll(c Context) {
-	//userid := c.Query("userid")
+	//userid := GetUserIDFromContext(c)
 	//useridを使用してdatabaseからデータを取得して
 	user := domain.UsersRequest{}
 	err := c.Bind(&user)
