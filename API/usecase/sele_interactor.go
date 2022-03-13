@@ -5,7 +5,7 @@ import (
 )
 
 type SeleInteractor struct {
-	SeleRepository SeleRepository
+	SeleRepo SeleRepository
 }
 
 type SakitoLogin struct {
@@ -14,10 +14,13 @@ type SakitoLogin struct {
 }
 
 func (interactor *SeleInteractor) DailyGatya(slogin *SakitoLogin) (*selenium.DailyGatya, error) {
-	if err := interactor.SeleRepository.Login(&selenium.Login{Email: slogin.Email, Password: slogin.Password}); err != nil {
+	if err := interactor.SeleRepo.Login(
+		&selenium.Login{
+			Email:    slogin.Email,
+			Password: slogin.Password}); err != nil {
 		return nil, err
 	}
-	daily, err := interactor.SeleRepository.DailyRoll()
+	daily, err := interactor.SeleRepo.DailyRoll()
 	if err != nil {
 		return nil, err
 	}

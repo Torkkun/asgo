@@ -16,7 +16,7 @@ func (interactor *UserInteractor) Create(user *database.User) error {
 	return nil
 }
 
-func (interactor *UserInteractor) UserById(identifier string) (*database.User, error) {
+func (interactor *UserInteractor) SelectUserById(identifier string) (*database.User, error) {
 	user, err := interactor.UserRepo.SelectUserFindById(identifier)
 	if err != nil {
 		log.Println(err)

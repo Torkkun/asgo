@@ -32,8 +32,8 @@ func init() {
 	router.Use(authenticate())
 
 	selehandler := NewSeleHandler()
-	seleController := controllers.NewSeleController(selehandler)
 	sqlhandler := NewSqlHandler()
+	seleController := controllers.NewSeleController(selehandler, sqlhandler)
 	userController := controllers.NewUserController(sqlhandler)
 
 	asgoreRoute := router.Group("/asgore")
@@ -56,7 +56,7 @@ func init() {
 		scrapingRoute := asgoreRoute.Group("/scrap")
 		{
 			scrapingRoute.GET("/data", func(c *gin.Context) {
-				seleController.Scraping(c)
+				seleController.ScrapingData(c)
 			})
 			scrapingRoute.GET("/daily", func(c *gin.Context) {
 				seleController.Roll(c)

@@ -11,8 +11,8 @@ type UserRepository struct {
 
 type User struct {
 	UserID     string //firebaseのID
-	Email      string
-	Password   string
+	Email      string //sakitoのメールアドレス
+	Password   string //sakitoのパスワード
 	Created_at time.Time
 	Updated_at time.Time
 }
@@ -30,7 +30,7 @@ func (repo *UserRepository) InsertUser(user *User) error {
 
 func (repo *UserRepository) SelectUserFindById(identifier string) (*User, error) {
 	row := repo.QueryRow(
-		"SELECT userID, email, password, created_at, updated_at FROM user WHERE client_uid = ?", identifier)
+		"SELECT userID, email, password, created_at, updated_at FROM user WHERE userID = ?", identifier)
 	return convertToUser(row)
 }
 

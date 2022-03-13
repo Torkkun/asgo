@@ -1,7 +1,5 @@
 package domain
 
-import "time"
-
 //引換券のデータ
 type ExchangeList struct {
 	Tickets []Ticket
@@ -13,26 +11,12 @@ type Ticket struct {
 	Period  string
 }
 
-//データベース内のガチャ結果
-type Gatya struct {
-	Day_Point       int
-	Sum_Point       int
-	Bonus_Ticket    int
-	Until_Bonus     int
-	Exchange_Ticket int
-	Enquete         bool
-	User_ID         string
-	Updated_At      time.Time
-}
-
 //デイリー用のデータ
-type DailyGatya struct {
-	Day_Point      int
-	Point_Sum      int
-	Execution_Date string
+type DailyGatyaResponse struct {
+	DayPoint      int    `json:"day_point"`
+	PointSum      int    `json:"point_sum"`
+	ExecutionDate string `json:"execution_data"`
 }
-
-type DailyDatas []DailyGatya
 
 //引換券ガチャ用のデータ
 type ExchangeGatya struct {

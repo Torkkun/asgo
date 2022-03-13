@@ -20,9 +20,9 @@ type Login struct {
 }
 
 type DailyGatya struct {
-	Day_Point      int
-	Point_Sum      int
-	Execution_Date string
+	DayPoint      int
+	PointSum      int
+	ExecutionDate string
 }
 
 //自動ログイン処理を実行
@@ -105,7 +105,11 @@ func (repo *SeleniumRepository) DailyRoll() (*DailyGatya, error) {
 		return nil, err
 	}
 	//最後に入れる
-	return &DailyGatya{Day_Point: point, Point_Sum: sum, Execution_Date: date}, nil
+	return &DailyGatya{
+			DayPoint:      point,
+			PointSum:      sum,
+			ExecutionDate: date},
+		nil
 }
 
 func (repo *SeleniumRepository) BonusRoll(count int) (err error) {
