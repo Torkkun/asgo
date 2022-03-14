@@ -1,6 +1,10 @@
 package selenium
 
-import "time"
+import (
+	"log"
+	"strconv"
+	"time"
+)
 
 type DailyGatya struct {
 	DayPoint      int
@@ -10,6 +14,7 @@ type DailyGatya struct {
 
 // デイリーを回して情報をスクレイピング
 func (repo *SeleniumRepository) DailyRoll() (*DailyGatya, error) {
+	// ポイントガチャ画面に遷移
 	elem, err := repo.FindElement(ByLinkText, "ポイントガチャを回す")
 	if err != nil {
 		return nil, err
@@ -17,6 +22,7 @@ func (repo *SeleniumRepository) DailyRoll() (*DailyGatya, error) {
 	if err = elem.Click(); err != nil {
 		return nil, err
 	}
+	// 回す
 	elem, err = repo.FindElement(ByCSSSelector, ".btn.btn-success.btn-block")
 	if err != nil {
 		return nil, err
@@ -25,9 +31,9 @@ func (repo *SeleniumRepository) DailyRoll() (*DailyGatya, error) {
 		return nil, err
 	}
 
-	// 少し待つ
+	// 回すのを少し待つ
 	time.Sleep(time.Millisecond * 100)
-
+	// 獲得ポイントを取得
 	elem, err = repo.FindElement(ByTagName, "b")
 	if err != nil {
 		return nil, err
@@ -36,6 +42,7 @@ func (repo *SeleniumRepository) DailyRoll() (*DailyGatya, error) {
 	if err != nil {
 		return nil, err
 	}
+	// 合計ポイントを取得
 	elem, err = repo.FindElement(ByTagName, "h3")
 	if err != nil {
 		return nil, err
@@ -44,6 +51,7 @@ func (repo *SeleniumRepository) DailyRoll() (*DailyGatya, error) {
 	if err != nil {
 		return nil, err
 	}
+	// 引換券ガチャへいっているが？？
 	elem, err = repo.FindElement(ByLinkText, "引換券ガチャへ")
 	if err != nil {
 		return nil, err
@@ -54,8 +62,17 @@ func (repo *SeleniumRepository) DailyRoll() (*DailyGatya, error) {
 	date := time.Now().Format("2006/01/02 15:04:05")
 	// 最後に入れる
 	return &DailyGatya{
-			DayPoint:      point,
-			PointSum:      sum,
+			DayPoint:      convertToInt(point),
+			PointSum:      convertToInt(sum),
 			ExecutionDate: date},
 		nil
+}
+
+func convertToInt(v string) int {
+	output, err := strconv.Atoi(v)
+	if err != nil {
+		log.Println(err)
+		return 0
+	}
+	return output
 }
