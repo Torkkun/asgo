@@ -1,6 +1,7 @@
 package database
 
 import (
+	"database/sql"
 	"time"
 )
 
@@ -9,18 +10,17 @@ type UserRepository struct {
 }
 
 type User struct {
-	Client_uid   string
-	Firebase_uid string
-	Email        string
-	Password     string
-	Created_at   time.Time
-	Updated_at   time.Time
+	UserID     string //firebaseのID
+	Email      string //sakitoのメールアドレス
+	Password   string //sakitoのパスワード
+	Created_at time.Time
+	Updated_at time.Time
 }
 
 func (repo *UserRepository) InsertUser(user *User) error {
 	_, err := repo.Execute(
-		"INSERT INTO user(userid, firebase_uid, email, password, created_at, updated_at) values($1,$2,$3,$4) ON CONFLICT ON CONSTRAINT user_pkey UPDATE SET email = $3 & password = $4 & updated_at = current_timestamp",
-		user.Client_uid, user.Firebase_uid, user.Email, user.Password,
+		"INSERT INTO user(userid, email, password) values(?,?,?)",
+		user.UserID, user.Email, user.Password,
 	)
 	if err != nil {
 		return err
@@ -28,16 +28,19 @@ func (repo *UserRepository) InsertUser(user *User) error {
 	return nil
 }
 
-func (repo *UserRepository) SelectUserFindById(identifier string) (*User, error) {
-	row, err := repo.Query(
-		"SELECT client_uid, firebase_uid, email, password, created_at, updated_at FROM user WHERE client_uid = ?", identifier)
+func (repo *UserRepository) SelectUserFindById(userID string) (*User, error) {
+	row := repo.QueryRow(
+		"SELECT userid, email, password, created_at, updated_at FROM user WHERE userid = ?", userID)
+	return convertToUser(row)
+}
+
+func convertToUser(row Row) (*User, error) {
+	user := User{}
+	err := row.Scan()
 	if err != nil {
-		return nil, err
-	}
-	defer row.Close()
-	var user User
-	row.Next()
-	if err = row.Scan(&user.Client_uid, &user.Firebase_uid, &user.Email, &user.Password, &user.Created_at, &user.Updated_at); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return &user, nil
