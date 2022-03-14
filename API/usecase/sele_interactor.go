@@ -13,7 +13,7 @@ type SakitoLogin struct {
 	Password string
 }
 
-func (interactor *SeleInteractor) DailyGatya(slogin *SakitoLogin) (*selenium.DailyGatya, error) {
+func (interactor *SeleInteractor) DailyGatya(slogin *selenium.Login) (*selenium.DailyGatya, error) {
 	if err := interactor.SeleRepo.Login(
 		&selenium.Login{
 			Email:    slogin.Email,
@@ -27,6 +27,15 @@ func (interactor *SeleInteractor) DailyGatya(slogin *SakitoLogin) (*selenium.Dai
 	return daily, err
 }
 
-func (interactor *SeleInteractor) MyData(userid string) (err error) {
-	return
+func (interactor *SeleInteractor) MyData(slogin *selenium.Login) (*selenium.Data, error) {
+	var data selenium.Data
+	// login
+	if err := interactor.SeleRepo.Login(&selenium.Login{
+		Email:    slogin.Email,
+		Password: slogin.Password,
+	}); err != nil {
+		return nil, err
+	}
+	// dataをスクレイピング
+	return &data, nil
 }

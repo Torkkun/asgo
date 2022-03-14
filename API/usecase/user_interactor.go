@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"asgo/interfaces/database"
-	"log"
 )
 
 type UserInteractor struct {
@@ -16,10 +15,9 @@ func (interactor *UserInteractor) Create(user *database.User) error {
 	return nil
 }
 
-func (interactor *UserInteractor) SelectUserById(identifier string) (*database.User, error) {
-	user, err := interactor.UserRepo.SelectUserFindById(identifier)
+func (interactor *UserInteractor) SelectUserById(userID string) (*database.User, error) {
+	user, err := interactor.UserRepo.SelectUserFindById(userID)
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 	return user, nil

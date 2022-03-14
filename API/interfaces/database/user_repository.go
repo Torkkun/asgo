@@ -19,7 +19,7 @@ type User struct {
 
 func (repo *UserRepository) InsertUser(user *User) error {
 	_, err := repo.Execute(
-		"INSERT INTO user(userID, email, password) values($1,$2,$3)",
+		"INSERT INTO user(userid, email, password) values(?,?,?)",
 		user.UserID, user.Email, user.Password,
 	)
 	if err != nil {
@@ -28,9 +28,9 @@ func (repo *UserRepository) InsertUser(user *User) error {
 	return nil
 }
 
-func (repo *UserRepository) SelectUserFindById(identifier string) (*User, error) {
+func (repo *UserRepository) SelectUserFindById(userID string) (*User, error) {
 	row := repo.QueryRow(
-		"SELECT userID, email, password, created_at, updated_at FROM user WHERE userID = ?", identifier)
+		"SELECT userid, email, password, created_at, updated_at FROM user WHERE userid = ?", userID)
 	return convertToUser(row)
 }
 

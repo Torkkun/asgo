@@ -25,3 +25,11 @@ type ExchangeGatya struct {
 //ボーナスガチャのデータ
 type BonusGatya struct {
 }
+
+// データの取得
+type DataResponse struct {
+	DayPoint    int    `json:"day_point"`
+	Points      int    `json:"points"`
+	BonusTicket int    `json:"bonus_ticket"`
+	BonusWeek   string `json:"bonus_week"`
+}

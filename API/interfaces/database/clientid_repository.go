@@ -13,7 +13,8 @@ type Client struct {
 }
 
 func (repo *ClientRepository) InsertClient(client *Client) error {
-	_, err := repo.Execute("")
+	_, err := repo.Execute("INSERT INTO client(userid, client_uid) VALUES(?,?)",
+		client.UserID, client.ClientUserID)
 	if err != nil {
 		return err
 	}
