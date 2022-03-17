@@ -16,47 +16,5 @@
 
 後にユーザー毎にコンフィグを設定できるようにしたい現状はログインページのみとする
 
-基本的な流れ
-ユーザー登録
-サイト自体のログインの後
-クローリングするサイトのパスワードとメールアドレスが必要パスワードを可逆暗号で暗号化してDBに保存
-設定を変更するときにDMを送って認証できないか？
-
-discordで自分のデータを取得するコマンドを入力するとデータが帰ってくる
-実行可能であれば通知、それ以外はデータだけ
-実行可能だった場合は現状任意でユーザーに実行させる
-
-毎日決まった時間にデイリーが実行され結果がdiscordに帰ってくる
-DB内のユーザーを全員一度に実行させる
-ユーザーテーブルには
-sakitoログイン用 password email
-USER_ID client
-Firebase uuid
-created_at
-
-clean architecture によりDBとseleniumライブラリを独立させたい！
-
-tables
-
-gatyadata
-{
-    daily_point int
-    sum_point int
-    bonus_ticket int
-    until_bonus int
-    exchange_ticket int
-    enquete bool
-    user_id string
-    updated_at time.Time
-}
-
-user
-{
-    user_id string
-    username string
-    password string
-    firebase_uuid string
-    client string
-}
-
-一日またはすべてのガチャが轢き終わったらその結果をまたはキャッシュして残すreddis
+適当
+　一日またはすべてのガチャが轢き終わったらその結果をまたはキャッシュして残すreddis
