@@ -8,23 +8,13 @@ import (
 )
 
 type UserController struct {
-	SInteracter usecase.SecretInteractor
-	UInteractor usecase.UserInteractor
+	DBService usecase.DBInteractor
 }
 
-func NewUserController(sqlHandler database.SqlHandler) *UserController {
+func NewUserController(sqlhandler database.SqlHandler) *UserController {
+	dbService := usecase.NewDBService(sqlhandler)
 	return &UserController{
-		SInteracter: usecase.SecretInteractor{
-			SecretRepo: &database.SecretRepository{
-				SqlHandler: sqlHandler,
-			},
-		},
-		UInteractor: usecase.UserInteractor{
-			UserRepo: &database.UserRepository{
-				SqlHandler: sqlHandler,
-			},
-		},
-	}
+		DBService: *dbService}
 }
 
 // discordのuidを取得しワンタイムパスワードを作成　// 時間制限をどうするか
@@ -33,12 +23,11 @@ func (con *UserController) NewCreate(c Context) {
 	oneTimePass, err := createpasscode()
 	if err != nil {
 		log.Println(err)
-		c.JSON(500, err.Error())
+		c.JSON(500, "Internal Server Error")
 	}
-
-	if err = con.SInteracter.Create(&database.Secret{ClientUserID: identifier, OneTimePassWord: oneTimePass}); err != nil {
+	if err = con.DBService.CreateSecret(&database.Secret{ClientUserID: identifier, OneTimePassWord: oneTimePass}); err != nil {
 		log.Println(err)
-		c.JSON(500, err.Error())
+		c.JSON(500, "Internal Server Error")
 	}
 	c.JSON(201, domain.SecretResponse{Code: oneTimePass})
 }

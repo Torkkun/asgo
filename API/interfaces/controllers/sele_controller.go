@@ -10,28 +10,21 @@ import (
 	"log"
 )
 
-type SeleController struct {
-	SeleInteractor usecase.SeleInteractor
-	UInteractor    usecase.UserInteractor
-	DInteractor    usecase.DataInteractor
+type SakitoController struct {
+	SakitoService usecase.SeleniumInteractor
+	DBService     usecase.DBInteractor
 }
 
-func NewSeleController(selehandler selenium.SeleHandler, sqlhandler database.SqlHandler) *SeleController {
-	return &SeleController{
-		SeleInteractor: usecase.SeleInteractor{
-			SeleRepo: &selenium.SeleniumRepository{
-				SeleHandler: selehandler,
-			},
-		},
-		UInteractor: usecase.UserInteractor{
-			UserRepo: &database.UserRepository{
-				SqlHandler: sqlhandler,
-			},
-		},
+func NewSakitoController(selehandler selenium.SeleHandler, sqlhandler database.SqlHandler) *SakitoController {
+	seleService := usecase.NewSeleService(selehandler)
+	dbService := usecase.NewDBService(sqlhandler)
+	return &SakitoController{
+		SakitoService: *seleService,
+		DBService:     *dbService,
 	}
 }
 
-func (controller *SeleController) Roll(c Context) {
+func (controller *SakitoController) Roll(c Context) {
 	userid := GetUserIDFromContext(c)
 	if userid == "" {
 		log.Println("unauthorized")
@@ -46,14 +39,14 @@ func (controller *SeleController) Roll(c Context) {
 		return
 	}
 	// userのpassとemailを取得
-	udata, err := controller.UInteractor.SelectUserById(userid)
+	udata, err := controller.DBService.SelectUserById(userid)
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, "Internal Server Error")
 		return
 	}
 	// DBからデータを取得し整形
-	data, err := controller.SeleInteractor.DailyGatya(
+	data, err := controller.SakitoService.DailyGatya(
 		&selenium.Login{
 			Email:    udata.Email,
 			Password: udata.Password})
@@ -70,7 +63,7 @@ func (controller *SeleController) Roll(c Context) {
 }
 
 // データを取得
-func (controller *SeleController) ScrapingData(c Context) {
+func (controller *SakitoController) HomeData(c Context) {
 	userid := GetUserIDFromContext(c)
 	if userid == "" {
 		log.Println("unauthorized")
@@ -78,7 +71,7 @@ func (controller *SeleController) ScrapingData(c Context) {
 		return
 	}
 	// DBからデータを取得
-	data, err := controller.DInteractor.Select(userid)
+	data, err := controller.DBService.GetData(userid)
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, "Internal Server Error")
@@ -95,14 +88,14 @@ func (controller *SeleController) ScrapingData(c Context) {
 		return
 	}
 	// userのpassとemailを取得
-	udata, err := controller.UInteractor.SelectUserById(userid)
+	udata, err := controller.DBService.SelectUserById(userid)
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, "Internal Server Error")
 		return
 	}
 	// dataをスクレイピング
-	mydata, err := controller.SeleInteractor.MyData(&selenium.Login{
+	mydata, err := controller.SakitoService.MyData(&selenium.Login{
 		Email:    udata.Email,
 		Password: udata.Password})
 	if err != nil {
@@ -112,7 +105,7 @@ func (controller *SeleController) ScrapingData(c Context) {
 	}
 	if data == nil {
 		// データが存在しないとき
-		if err := controller.DInteractor.Create(
+		if err := controller.DBService.CreateData(
 			&database.Data{
 				UserID:      userid,
 				Points:      mydata.Points,
@@ -130,7 +123,7 @@ func (controller *SeleController) ScrapingData(c Context) {
 		})
 	} else {
 		// データが存在するときアップデート
-		if err := controller.DInteractor.Update(
+		if err := controller.DBService.UpdateData(
 			&database.Data{
 				Points:      mydata.Points,
 				BonusTicket: mydata.BonusTicket,

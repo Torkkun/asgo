@@ -4,16 +4,12 @@ import (
 	"asgo/interfaces/selenium"
 )
 
-type SeleInteractor struct {
-	SeleRepo SeleRepository
-}
-
 type SakitoLogin struct {
 	Email    string
 	Password string
 }
 
-func (interactor *SeleInteractor) DailyGatya(slogin *selenium.Login) (*selenium.DailyGatya, error) {
+func (interactor *SeleniumInteractor) DailyGatya(slogin *selenium.Login) (*selenium.DailyGatya, error) {
 	if err := interactor.SeleRepo.Login(
 		&selenium.Login{
 			Email:    slogin.Email,
@@ -27,7 +23,7 @@ func (interactor *SeleInteractor) DailyGatya(slogin *selenium.Login) (*selenium.
 	return daily, err
 }
 
-func (interactor *SeleInteractor) MyData(slogin *selenium.Login) (*selenium.Data, error) {
+func (interactor *SeleniumInteractor) MyData(slogin *selenium.Login) (*selenium.Data, error) {
 	var data selenium.Data
 	// login
 	if err := interactor.SeleRepo.Login(&selenium.Login{

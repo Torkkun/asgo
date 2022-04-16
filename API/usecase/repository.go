@@ -5,22 +5,35 @@ import (
 	"asgo/interfaces/selenium"
 )
 
-type Repositorys struct {
-	SecretRepo     SecretRepository
-	UserRepo       UserRepository
-	SeleRepository SeleRepository
+type DBInteractor struct {
+	SecretRepo SecretRepository
+	UserRepo   UserRepository
+	DataRepo   DataRepository
 }
 
-//まとめてrepositoryを返す　どちらが良いかは後にしらべる
-func NewRepository(sqlHandler database.SqlHandler, selehandler selenium.SeleHandler) *Repositorys {
-	return &Repositorys{
+type SeleniumInteractor struct {
+	SeleRepo SeleRepository
+}
+
+// repositoryをusecaseintaractorで使用できるようにする
+//まとめてrepositoryを返す　サービスとしてインジェクションする
+func NewDBService(sqlHandler database.SqlHandler) *DBInteractor {
+	return &DBInteractor{
 		SecretRepo: &database.SecretRepository{
 			SqlHandler: sqlHandler,
 		},
 		UserRepo: &database.UserRepository{
 			SqlHandler: sqlHandler,
 		},
-		SeleRepository: &selenium.SeleniumRepository{
+		DataRepo: &database.DataRepository{
+			SqlHandler: sqlHandler,
+		},
+	}
+}
+
+func NewSeleService(selehandler selenium.SeleHandler) *SeleniumInteractor {
+	return &SeleniumInteractor{
+		SeleRepo: &selenium.SeleniumRepository{
 			SeleHandler: selehandler,
 		},
 	}

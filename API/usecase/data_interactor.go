@@ -1,19 +1,17 @@
 package usecase
 
-import "asgo/interfaces/database"
+import (
+	"asgo/interfaces/database"
+)
 
-type DataInteractor struct {
-	DataRepo DataRepository
-}
-
-func (interactor *DataInteractor) Create(data *database.Data) error {
+func (interactor *DBInteractor) CreateData(data *database.Data) error {
 	if err := interactor.DataRepo.InsertData(data); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (interactor *DataInteractor) Select(userid string) (*database.Data, error) {
+func (interactor *DBInteractor) GetData(userid string) (*database.Data, error) {
 	data, err := interactor.DataRepo.SelectDataByUserID(userid)
 	if err != nil {
 		return nil, err
@@ -21,7 +19,7 @@ func (interactor *DataInteractor) Select(userid string) (*database.Data, error) 
 	return data, nil
 }
 
-func (interactor *DataInteractor) Update(data *database.Data) error {
+func (interactor *DBInteractor) UpdateData(data *database.Data) error {
 	if err := interactor.DataRepo.UpdateData(data); err != nil {
 		return err
 	}

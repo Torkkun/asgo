@@ -33,7 +33,7 @@ func init() {
 
 	selehandler := NewSeleHandler()
 	sqlhandler := NewSqlHandler()
-	seleController := controllers.NewSeleController(selehandler, sqlhandler)
+	seleController := controllers.NewSakitoController(selehandler, sqlhandler)
 	userController := controllers.NewUserController(sqlhandler)
 
 	asgoreRoute := router.Group("/asgore")
@@ -53,10 +53,11 @@ func init() {
 			})
 		}
 
+		// スクレイピングのデータ保存
 		scrapingRoute := asgoreRoute.Group("/scrap")
 		{
 			scrapingRoute.GET("/data", func(c *gin.Context) {
-				seleController.ScrapingData(c)
+				seleController.HomeData(c)
 			})
 			scrapingRoute.GET("/daily", func(c *gin.Context) {
 				seleController.Roll(c)
@@ -70,6 +71,7 @@ func init() {
 
 		}
 
+		// DBからアクセス用
 		dataRoute := asgoreRoute.Group("/data")
 		{
 			dataRoute.POST("/create", func(c *gin.Context) {
