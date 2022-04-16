@@ -60,7 +60,7 @@ func init() {
 				seleController.HomeData(c)
 			})
 			scrapingRoute.GET("/daily", func(c *gin.Context) {
-				seleController.Roll(c)
+				seleController.Daily(c)
 			})
 			scrapingRoute.GET("/ticket", func(c *gin.Context) {
 

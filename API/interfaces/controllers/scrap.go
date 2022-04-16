@@ -24,7 +24,7 @@ func NewSakitoController(selehandler selenium.SeleHandler, sqlhandler database.S
 	}
 }
 
-func (controller *SakitoController) Roll(c Context) {
+func (controller *SakitoController) Daily(c Context) {
 	userid := GetUserIDFromContext(c)
 	if userid == "" {
 		log.Println("unauthorized")
